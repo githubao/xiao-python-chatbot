@@ -2,7 +2,7 @@
 # encoding: utf-8
 
 """
-@description: 入门模型
+@description: 入门模型，随机和tf-idf
 
 @author: BaoQiang
 @time: 2017/4/24 21:14
@@ -63,6 +63,13 @@ class TfIdfPredictor:
 
 
 def predict2():
+    '''
+    Recall @ (1, 10): 0.242424
+    Recall @ (2, 10): 0.333333
+    Recall @ (5, 10): 0.707071
+    Recall @ (10, 10): 1
+    :return: 
+    '''
     pred = TfIdfPredictor()
     pred.train(train_df)
     y = [pred.predict(test_df.Context[x], test_df.iloc[x, 1:].values) for x in range(len(test_df))]
