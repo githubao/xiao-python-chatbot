@@ -16,13 +16,13 @@ TEXT_FEATURE_SIZE = 160
 def get_feature_columns(mode):
     feature_columns = []
 
-    feature_columns.append(tf.contrib.layer.real_valued_column(
+    feature_columns.append(tf.contrib.layers.real_valued_column(
         column_name='context', dimension=TEXT_FEATURE_SIZE, dtype=tf.int64))
-    feature_columns.append(tf.contrib.layer.real_valued_column(
+    feature_columns.append(tf.contrib.layers.real_valued_column(
         column_name='context_len', dimension=1, dtype=tf.int64))
-    feature_columns.append(tf.contrib.layer.real_valued_column(
+    feature_columns.append(tf.contrib.layers.real_valued_column(
         column_name='utterance', dimension=TEXT_FEATURE_SIZE, dtype=tf.int64))
-    feature_columns.append(tf.contrib.layer.real_valued_column(
+    feature_columns.append(tf.contrib.layers.real_valued_column(
         column_name='utterance_len', dimension=1, dtype=tf.int64))
 
     if mode == tf.contrib.learn.ModeKeys.TRAIN:
@@ -31,9 +31,9 @@ def get_feature_columns(mode):
 
     if mode == tf.contrib.learn.ModeKeys.EVAL:
         for i in range(1, 9):
-            feature_columns.append(tf.contrib.layer.real_valued_column(
+            feature_columns.append(tf.contrib.layers.real_valued_column(
                 column_name='distractor_{}'.format(i), dimension=TEXT_FEATURE_SIZE, dtype=tf.int64))
-            feature_columns.append(tf.contrib.layer.real_valued_column(
+            feature_columns.append(tf.contrib.layers.real_valued_column(
                 column_name='distractor_{}_len'.format(i), dimension=1, dtype=tf.int64))
 
     return set(feature_columns)
@@ -41,7 +41,7 @@ def get_feature_columns(mode):
 
 def create_input_fn(mode, input_files, batch_size, num_epochs):
     def input_fn():
-        features = tf.contrib.layers.create_spec_for_parsing(
+        features = tf.contrib.layers.create_feature_spec_for_parsing(
             get_feature_columns(mode))
 
         feature_map = tf.contrib.learn.read_batch_features(

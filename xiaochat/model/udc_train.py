@@ -57,7 +57,7 @@ def main(unused_argv):
         input_fn=input_fn_eval, every_n_steps=FLAGS.eval_every, metrics=eval_metrics
     )
 
-    estimator.fit(input_fn=input_fn_train, steps=None, metrics=[eval_monitor])
+    estimator.fit(input_fn=input_fn_train, steps=None, monitors=[eval_monitor])
 
 
 if __name__ == '__main__':

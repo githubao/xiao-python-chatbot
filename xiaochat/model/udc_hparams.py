@@ -12,7 +12,7 @@ import tensorflow as tf
 from collections import namedtuple
 
 tf.flags.DEFINE_integer(
-    'vovab_size',
+    'vocab_size',
     91620,
     'The size of the vocabulary. Only change this if you changed the preprocessing'
 )
@@ -28,7 +28,7 @@ tf.flags.DEFINE_string('vocab_path', None, 'Path to vocabulary.txt file')
 tf.flags.DEFINE_float('learning_rate', 0.001, 'Learning rate')
 tf.flags.DEFINE_integer('batch_size', 128, 'Batch size during training')
 tf.flags.DEFINE_integer('eval_batch_size', 16, 'Batch size during evaluation')
-tf.flags.DEFINE_integer('optimizer', 'Adam', 'Optimizer Name (Adam, Adagrad, etc)')
+tf.flags.DEFINE_string('optimizer', 'Adam', 'Optimizer Name (Adam, Adagrad, etc)')
 
 FLAGS = tf.flags.FLAGS
 
