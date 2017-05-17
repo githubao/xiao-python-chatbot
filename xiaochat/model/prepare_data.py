@@ -15,13 +15,13 @@ import tensorflow as tf
 
 tf.flags.DEFINE_integer('min_word_frequency', 5, 'Minimum frequency of words in the vocabulary')
 tf.flags.DEFINE_integer('max_sentence_len', 160, 'Maximum Sentence Length')
-tf.flags.DEFINE_string('input_dir', os.path.abspath('./data'),
-                       'Input directory containing original CSV data files (default = "./data")')
-tf.flags.DEFINE_string('output_dir', os.path.abspath('./data'),
-                       'Output directory for TFRecord files (default = "./data")')
+tf.flags.DEFINE_string('input_dir', os.path.abspath('../data'),
+                       'Input directory containing original CSV data files (default = "../data")')
+tf.flags.DEFINE_string('output_dir', os.path.abspath('../data'),
+                       'Output directory for TFRecord files (default = "../data")')
 FLAGS = tf.flags.FLAGS
 
-TRAIN_PATH = os.path.join(FLAGS.input_dir, './data')
+TRAIN_PATH = os.path.join(FLAGS.input_dir, 'train.csv')
 VALIDATION_PATH = os.path.join(FLAGS.input_dir, 'valid.csv')
 TEST_PATH = os.path.join(FLAGS.input_dir, 'test.csv')
 
@@ -115,7 +115,7 @@ def write_vocabulary(vocab_processor, outfile):
     vocab_size = len(vocab_processor.vocabulary_)
     with open(outfile, 'w') as vocabfile:
         for id in range(vocab_size):
-            word = vocab_processor.vocabulary_.reverse_mapping[id]
+            word = vocab_processor.vocabulary_._reverse_mapping[id]
             vocabfile.write(word + '\n')
     print('Saved vocabulary to {}'.format(outfile))
 

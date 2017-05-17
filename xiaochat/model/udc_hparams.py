@@ -11,13 +11,18 @@
 import tensorflow as tf
 from collections import namedtuple
 
-tf.flags.DEFINE_integer(
-    'vocab_size',
-    91620,
-    'The size of the vocabulary. Only change this if you changed the preprocessing'
-)
+# tf.flags.DEFINE_integer('vocab_size', 91620,
+#                         'The size of the vocabulary. Only change this if you changed the preprocessing')
+# tf.flags.DEFINE_integer('embedding_dim', 100, 'Dimensionality of the embeddings')
+# tf.flags.DEFINE_integer('batch_size', 128, 'Batch size during training')
 
-tf.flags.DEFINE_integer('embedding_dim', 100, 'Dimensionality of the embeddings')
+
+tf.flags.DEFINE_integer('vocab_size', 100,
+                        'The size of the vocabulary. Only change this if you changed the preprocessing')
+tf.flags.DEFINE_integer('embedding_dim', 1, 'Dimensionality of the embeddings')
+tf.flags.DEFINE_integer('batch_size', 1, 'Batch size during training')
+
+
 tf.flags.DEFINE_integer('rnn_dim', 256, 'Dimensionality of the RNN cell')
 tf.flags.DEFINE_integer('max_context_len', 160, 'Truncate contexts to this length')
 tf.flags.DEFINE_integer('max_utterance_len', 80, 'Truncate utterance to this length')
@@ -26,7 +31,6 @@ tf.flags.DEFINE_string('glove_path', None, 'Path to pre-trained Glove vectors')
 tf.flags.DEFINE_string('vocab_path', None, 'Path to vocabulary.txt file')
 
 tf.flags.DEFINE_float('learning_rate', 0.001, 'Learning rate')
-tf.flags.DEFINE_integer('batch_size', 128, 'Batch size during training')
 tf.flags.DEFINE_integer('eval_batch_size', 16, 'Batch size during evaluation')
 tf.flags.DEFINE_string('optimizer', 'Adam', 'Optimizer Name (Adam, Adagrad, etc)')
 

@@ -9,7 +9,6 @@
 """
 
 import os
-import sys
 import time
 
 import tensorflow as tf
@@ -22,7 +21,8 @@ tf.flags.DEFINE_string('input_dir', '../data',
 tf.flags.DEFINE_string('model_dir', None, 'Directory to load model checkpoints (defaults to ./runs)')
 tf.flags.DEFINE_integer('loglevel', 20, 'Tensorflow log level')
 tf.flags.DEFINE_integer('num_epochs', None, 'Number of training Epochs, Defaults to indefinite.')
-tf.flags.DEFINE_integer('eval_every', 2000, 'Evaluate after this many train steps')
+# tf.flags.DEFINE_integer('eval_every', 2000, 'Evaluate after this many train steps')
+tf.flags.DEFINE_integer('eval_every', 200, 'Evaluate after this many train steps')
 FLAGS = tf.flags.FLAGS
 
 TIMESTAP = int(time.time())
@@ -30,7 +30,7 @@ TIMESTAP = int(time.time())
 if FLAGS.model_dir:
     MODEL_DIR = FLAGS.model_dir
 else:
-    MODEL_DIR = os.path.abspath(os.path.join('./runs', str(TIMESTAP)))
+    MODEL_DIR = os.path.abspath(os.path.join('../runs', str(TIMESTAP)))
 
 TRAIN_FILE = os.path.abspath(os.path.join(FLAGS.input_dir, 'train.tfrecords'))
 VALIDATION_FILE = os.path.abspath(os.path.join(FLAGS.input_dir, 'validation.tfrecords'))
@@ -45,7 +45,7 @@ def main(unused_argv):
     estimator = tf.contrib.learn.Estimator(model_fn=model_fn, model_dir=MODEL_DIR,
                                            config=tf.contrib.learn.RunConfig())
 
-    input_fn_train = udc_inputs.create_input_fn(mode=tf.contrib.learn.ModeKeys.EVAL, input_files=[TRAIN_FILE],
+    input_fn_train = udc_inputs.create_input_fn(mode=tf.contrib.learn.ModeKeys.TRAIN, input_files=[TRAIN_FILE],
                                                 batch_size=hparams.batch_size, num_epochs=FLAGS.num_epochs)
 
     input_fn_eval = udc_inputs.create_input_fn(mode=tf.contrib.learn.ModeKeys.EVAL, input_files=[VALIDATION_FILE],

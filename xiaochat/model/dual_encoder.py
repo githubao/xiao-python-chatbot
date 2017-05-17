@@ -40,10 +40,10 @@ def dual_encoder_model(hparams, mode, context, context_len, utterance, utterance
 
     with tf.variable_scope('rnn') as vs:
         cell = tf.contrib.rnn.LSTMCell(hparams.rnn_dim, forget_bias=2.0, use_peepholes=True, state_is_tuple=True)
-        rnn_outputs, rnn_states = tf.nn.dynamic_rnn(cell, tf.concat(0, [context_embedded, utterance_embedded]),
-                                                    sequence_length=tf.concat(0, [context_len, utterance_len]),
+        rnn_outputs, rnn_states = tf.nn.dynamic_rnn(cell, tf.concat([context_embedded, utterance_embedded], axis=0),
+                                                    sequence_length=tf.concat([context_len, utterance_len], axis=0),
                                                     dtype=tf.float32)
-        encoding_context, encoding_utterance = tf.split(0, 2, rnn_states.h)
+        encoding_context, encoding_utterance = tf.split(rnn_states.h, 2, axis=0)
 
     with tf.variable_scope('prediction') as vs:
         M = tf.get_variable('M', shape=[hparams.rnn_dim, hparams.rnn_dim],
@@ -61,7 +61,7 @@ def dual_encoder_model(hparams, mode, context, context_len, utterance, utterance
         if mode == tf.contrib.learn.ModeKeys.INFER:
             return probs, None
 
-        losses = tf.nn.sigmoid_cross_entropy_with_logits(logits, tf.to_float(targets))
+        losses = tf.nn.sigmoid_cross_entropy_with_logits(logits=logits, labels=tf.to_float(targets))
 
     mean_loss = tf.reduce_mean(losses, name='mean_loss')
     return probs, mean_loss

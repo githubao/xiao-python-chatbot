@@ -26,7 +26,7 @@ def get_feature_columns(mode):
         column_name='utterance_len', dimension=1, dtype=tf.int64))
 
     if mode == tf.contrib.learn.ModeKeys.TRAIN:
-        feature_columns.append(tf.contrib.layer.real_valued_column(
+        feature_columns.append(tf.contrib.layers.real_valued_column(
             column_name='label', dimension=1, dtype=tf.int64))
 
     if mode == tf.contrib.learn.ModeKeys.EVAL:

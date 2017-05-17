@@ -44,7 +44,7 @@ def create_model_fn(hparams, model_impl):
             probs, loss = model_impl(hparams, mode, context, context_len, utterance, utterance_len, None)
             return probs, 0.0, None
 
-        if mode == tf.contrib.learn.ModeKeys.EVEL:
+        if mode == tf.contrib.learn.ModeKeys.EVAL:
             all_contexts = [context]
             all_context_lens = [context_len]
             all_utterances = [utterance]
@@ -53,7 +53,7 @@ def create_model_fn(hparams, model_impl):
 
             for i in range(9):
                 distractor, distractor_len = get_id_feature(features, 'distractor_{}'.format(i),
-                                                            'distractor_{}_lne'.format(i), hparams.max_utterance_len)
+                                                            'distractor_{}_len'.format(i), hparams.max_utterance_len)
                 all_contexts.append(context)
                 all_context_lens.append(context_len)
                 all_utterances.append(distractor)
@@ -64,12 +64,14 @@ def create_model_fn(hparams, model_impl):
                                      tf.concat(0, all_utterances), tf.concat(0, all_utterance_lens),
                                      tf.concat(0, all_targets))
 
-            split_probs = tf.split(0, 10, probs)
-            shaped_probs = tf.concat(1, split_probs)
+            split_probs = tf.split(probs,10,axis=0)
+            shaped_probs = tf.concat(split_probs,axis=1)
 
             tf.summary.histogram('eval_correct_probs_hist', split_probs[0])
             tf.summary.scalar('eval_correct_probs_average', tf.reduce_mean(split_probs[0]))
             tf.summary.histogram('eval_incorrect_probs_hist', split_probs[1])
             tf.summary.scalar('eval_incorrect_probs_average', tf.reduce_mean(split_probs[1]))
-            
+
             return shaped_probs, loss, None
+
+    return model_fn
